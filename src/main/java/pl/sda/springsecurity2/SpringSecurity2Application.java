@@ -20,8 +20,14 @@ public class SpringSecurity2Application implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        if(roleRepository.findAll().size() == 0){
-            RoleEntity roleUser = RoleEntity.builder().name("USER").build();
+        if (roleRepository.findAll().size() == 0) {
+            createRole("USER");
+            createRole("ADMIN");
         }
+    }
+
+    private void createRole(String name) {
+        RoleEntity roleUser = RoleEntity.builder().name(name).build();
+        roleRepository.save(roleUser);
     }
 }
