@@ -26,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authoritiesByUsernameQuery("SELECT u.email, r.name, 1 " +
                         "FROM user u " +
                         "INNER JOIN user_role ur ON ur.user_id = u.id " +
-                        "INNER JOIN role r ON r.role_id = ur.role_id " +
+                        "INNER JOIN role r ON r.id = ur.role_id " +
                         "WHERE u.email=?")
                 .dataSource(dataSource);
     }
