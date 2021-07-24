@@ -7,6 +7,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import javax.sql.DataSource;
+
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -14,14 +16,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     MyAccessDeniedHandler accessDeniedHandler;
 
     @Autowired
+    DataSource dataSource;
+
+    @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
-        auth.inMemoryAuthentication()
-                .withUser("user").password("{noop}user").roles("USER")
-                .and()
-                .withUser("admin").password("{noop}admin").roles("ADMIN", "USER");
+        auth.jdbcAuthentication()
+                .usersByUsernameQuery("SELECT u.email, u.password,1 FROM user u WHERE u.email=?")
+                .authoritiesByUsernameQuery("SELECT u.email, r.name, 1 " +
+                        "FROM user u " +
+                        "INNER JOIN user_role ur ON ur.user_id = u.id " +
+                        "INNER JOIN role r ON r.role_id = ur.role_id " +
+                        "WHERE u.email=?")
+                .dataSource(dataSource);
     }
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
