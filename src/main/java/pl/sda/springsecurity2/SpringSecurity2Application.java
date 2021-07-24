@@ -6,6 +6,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import pl.sda.springsecurity2.model.RoleEntity;
+import pl.sda.springsecurity2.model.RoleType;
 import pl.sda.springsecurity2.repository.RoleRepository;
 
 @SpringBootApplication
@@ -21,13 +22,13 @@ public class SpringSecurity2Application implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         if (roleRepository.findAll().isEmpty()) {
-            createRole("USER");
-            createRole("ADMIN");
+            createRole(RoleType.ROLE_USER);
+            createRole(RoleType.ROLE_ADMIN);
         }
     }
 
-    private void createRole(String name) {
-        RoleEntity roleUser = RoleEntity.builder().name(name).build();
+    private void createRole(RoleType roleType) {
+        RoleEntity roleUser = RoleEntity.builder().name(roleType).build();
         roleRepository.save(roleUser);
     }
 }

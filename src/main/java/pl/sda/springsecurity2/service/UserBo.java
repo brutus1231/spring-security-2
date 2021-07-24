@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.sda.springsecurity2.model.RoleEntity;
+import pl.sda.springsecurity2.model.RoleType;
 import pl.sda.springsecurity2.model.UserEntity;
 import pl.sda.springsecurity2.repository.RoleRepository;
 import pl.sda.springsecurity2.repository.UserRepository;
@@ -26,7 +27,7 @@ public class UserBo {
     }
 
     private void setDefaultRole(UserEntity user) {
-        RoleEntity userRole = roleRepository.findFirstByName("USER");
+        RoleEntity userRole = roleRepository.findFirstByName(RoleType.ROLE_USER);
         user.setRoles(Arrays.asList(userRole));
     }
 }
