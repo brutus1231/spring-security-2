@@ -6,4 +6,6 @@ import pl.sda.springsecurity2.model.RoleEntity;
 
 @Repository
 public interface RoleRepository extends JpaRepository<RoleEntity, Long> {
+
+    RoleEntity findFirstByName(String name);
 }
