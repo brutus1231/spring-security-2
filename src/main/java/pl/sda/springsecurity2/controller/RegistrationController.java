@@ -8,6 +8,6 @@ public class RegistrationController {
 
     @GetMapping("/register")
     public String view() {
-        return "registation";
+        return "registration";
     }
 }
